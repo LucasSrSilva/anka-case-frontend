@@ -1,4 +1,4 @@
-import { User, UserPlus } from "lucide-react";
+import { ChartLine, History, LayoutDashboard, User, UserPlus } from "lucide-react";
 import Image from "next/image";
 import {
     Sidebar,
@@ -9,22 +9,30 @@ import {
     SidebarMenu,
     SidebarMenuButton,
     SidebarMenuItem,
-} from "@/components/ui/sidebar"
+} from "@/components/ui/sidebar";
+import {
+    Collapsible,
+    CollapsibleTrigger,
+    CollapsibleContent,
+} from "@/components/ui/collapsible";
+import { ChevronDown } from "lucide-react";
 
 const items = [
     {
-        title: "Clientes",
-        url: "#",
-        icon: User,
+        title: "Clientes", icon: User, subItens: [
+            { title: "Dashboard", url: "/dashboard", icon: LayoutDashboard },
+            { title: "Projeção", url: "/projection", icon: ChartLine },
+            { title: "Histórico", url: "/history", icon: History },
+        ]
     },
     {
         title: "Prospects",
-        url: "#",
         icon: UserPlus,
+        subItens: []
     },
     {
         title: "Consolidação",
-        url: "#",
+        subItens: [],
         icon: () => (
             <Image
                 src="/icons/consolidation.svg"
@@ -36,7 +44,7 @@ const items = [
     },
     {
         title: "CRM",
-        url: "#",
+        subItens: [],
         icon: () => (
             <Image
                 src="/icons/crm.svg"
@@ -48,7 +56,7 @@ const items = [
     },
     {
         title: "Captação",
-        url: "#",
+        subItens: [],
         icon: () => (
             <Image
                 src="/icons/captation.svg"
@@ -60,7 +68,7 @@ const items = [
     },
     {
         title: "Financeiro",
-        url: "#",
+        subItens: [],
         icon: () => (
             <Image
                 src="/icons/finance.svg"
@@ -70,29 +78,47 @@ const items = [
             />
         ),
     },
-]
+];
 
 export function AppSidebar() {
     return (
         <Sidebar collapsible="none" className="text-[#9f9f9f]">
             <SidebarContent>
                 <SidebarGroup>
-                    <SidebarGroupLabel className="flex items-center justify-center py-10"><Image
-                        src="/logo.png"
-                        alt="Anka"
-                        width={180}
-                        height={60}
-                    /></SidebarGroupLabel>
+                    <SidebarGroupLabel className="flex items-center justify-center py-10">
+                        <Image
+                            src="/logo.png"
+                            alt="Anka"
+                            width={180}
+                            height={60}
+                        />
+                    </SidebarGroupLabel>
                     <SidebarGroupContent>
                         <SidebarMenu>
                             {items.map((item) => (
                                 <SidebarMenuItem key={item.title}>
-                                    <SidebarMenuButton asChild>
-                                        <a href={item.url}>
-                                            <item.icon />
-                                            <span>{item.title}</span>
-                                        </a>
-                                    </SidebarMenuButton>
+                                    <Collapsible className="group" defaultOpen>
+                                        <CollapsibleTrigger className="flex items-center justify-between w-full cursor-pointer px-2 py-1">
+                                            <div className="flex items-center gap-2">
+                                                <item.icon />
+                                                <span>{item.title}</span>
+                                            </div>
+                                            <ChevronDown className="ml-auto transition-transform group-data-[state=open]:rotate-180" />
+                                        </CollapsibleTrigger>
+                                        <CollapsibleContent>
+                                            {item.subItens && item.subItens.length > 0 ? (
+                                                <SidebarMenu className="pl-8">
+                                                    {item.subItens.map((subItem) => (
+                                                        <SidebarMenuItem key={subItem.title}>
+                                                            <SidebarMenuButton asChild>
+                                                                <a href={subItem.url}><subItem.icon />{subItem.title}</a>
+                                                            </SidebarMenuButton>
+                                                        </SidebarMenuItem>
+                                                    ))}
+                                                </SidebarMenu>
+                                            ) : null}
+                                        </CollapsibleContent>
+                                    </Collapsible>
                                 </SidebarMenuItem>
                             ))}
                         </SidebarMenu>
@@ -100,5 +126,5 @@ export function AppSidebar() {
                 </SidebarGroup>
             </SidebarContent>
         </Sidebar>
-    )
+    );
 }
