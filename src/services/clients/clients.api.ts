@@ -2,9 +2,9 @@ import { get, post, put, del } from "../api"
 import { Client } from "./clients.types"
 
 
-export const fetchClients = () => get<Client[]>('/clients')
+export const getClients = () => get<Client[]>('/clients')
 
-export const fetchClientById = (id: string) => get<Client>(`/clients/${id}`)
+export const getClientById = (id: string) => get<Client>(`/clients/${id}`)
 
 export const createClient = (data: Omit<Client, 'id' | 'createdAt' | 'updatedAt'>) =>
   post<Client>('/clients', data)
