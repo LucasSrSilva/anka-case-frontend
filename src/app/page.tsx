@@ -3,6 +3,7 @@ import { getClients } from "@/services/clients/clients.api";
 import { Client } from "@/services/clients/clients.types";
 import { DashboardData, getDashboardData } from "@/services/data.api";
 import { useEffect, useState } from "react";
+import { RadialChart } from '../components/radial-chart'
 
 
 
@@ -29,23 +30,26 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="">
-      {clients.map(client => (
-        <div key={client.id}>
-          <h2>{client.nome}</h2>
-          <p>{client.email}</p>
-          <p>{client.idade}</p>
-          <p>{client.status}</p>
-          <p>{client.perfilFamiliar}</p>
-        </div>
-      ))}
+    <div className="flex flex-wrap gap-4 p-4">
+      <div className="bg-[#1b1b1b]">
+        <h2>Clientes</h2>
+        {clients.map(client => (
+          <div key={client.id}>
+            <h2>{client.nome}</h2>
+            <p>{client.email}</p>
+            <p>{client.idade}</p>
+            <p>{client.status}</p>
+            <p>{client.perfilFamiliar}</p>
+          </div>
+        ))}
+      </div>
+      {dashboardData && (
+        <RadialChart totalClients={dashboardData.totalClients} clientWithPlannerPercentual={parseFloat(dashboardData.clientsWithPlannerPercentual.toFixed(2)) || 0} />
+      )}
       <div>
-        <h2>Dashboard</h2>
         {dashboardData && (
-          <div>
-            <p>Total Clients: {dashboardData.totalClients}</p>
-            <p>Clients with Planner: {dashboardData.clientsWithPlannerPercentual.toFixed(2)}%</p>
-            <h3>Percentual by Profile</h3>
+          <div className="bg-[#1b1b1b]">
+            <h3>Perfis com seguro pelo total</h3>
             <ul>
               {Object.entries(dashboardData.percentualByprofile).map(([profile, percentual]) => (
                 <li key={profile}>
@@ -56,7 +60,6 @@ export default function Home() {
           </div>
         )}
       </div>
-
     </div>
   );
 }

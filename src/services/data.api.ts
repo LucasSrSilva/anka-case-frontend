@@ -1,5 +1,5 @@
 import { get } from "./api";
-export interface DashboardData {
+export type DashboardData = {
     totalClients: number;
     clientsWithPlannerPercentual: number;
     percentualByprofile: Record<string, number>;
